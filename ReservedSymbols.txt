@@ -1,0 +1,8 @@
+Private
+Public
+Protected
+Static
+Primary
+Integer
+Exception
+Try

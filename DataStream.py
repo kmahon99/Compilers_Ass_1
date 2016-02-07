@@ -22,13 +22,7 @@ class Source:
         return char
 
     def __del__(self):
-        self.file.close()
-
-
-s = Source("test.txt")
-
-c = s.nextChar()
-
-while c != "END":
-    c = s.nextChar()
-    print(c)
+        try:
+            self.file.close()
+        except AttributeError:
+            pass
