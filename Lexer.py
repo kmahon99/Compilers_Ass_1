@@ -2,8 +2,10 @@ import DataStream as Stream
 
 class Lexer:
     def __init__(self, filename):
+        self.delims = ['\n','\t','\r',' ','(',')',';']
         self.filename = filename
         self.stream = Stream.Source(self.filename)
+        self.getAnalysis()
 
     def Driver(self):
         if self.stream == None:
@@ -12,17 +14,46 @@ class Lexer:
             c = self.stream.nextChar()
             return c
 
-
-    def GetAnalysis(self):
+    def getAnalysis(self):
         c = self.Driver()
-        while c != "END":
-            if ord(c) >= 65 and ord(c) <= 90:
-                self.checkStatic(c)
+        while c != '':
+            if ord(c) in range(97,122):
+                item = self.checkIdentifier(c)
+                print("Identifier: ",item)
+            elif ord(c) in range(48,57):
+                item = self.checkInt(c)
+                print("Int: ",item)
+            elif ord(c) == 34:
+                item  = self.checkString(c)
+                print("String: ",item)
 
-    def checkStatic(self, startchar):
-        item = startchar
+            c = self.Driver()
+
+    def checkIdentifier(self, start):
+        item = start
         c = self.Driver()
-        while (ord(c) >= 48 and ord(c) <= 57) and (ord(c) != )
+        while(ord(c) in range(65,90) or ord(c) in range(97,122)): # collect until we get something other than a letter
+            item += c
+            c = self.Driver()
+        return item
+
+    def checkInt(self,start):
+        item = start
+        c = self.Driver()
+        while(ord(c) in range(48,57)): # collect until we get something other than a number
+            item += c
+            c = self.Driver()
+        return item
+
+    def checkString(self,start):
+        item = ""
+        c = self.Driver()
+        while(ord(c) != 34):
+            if ord(c) == 126: # tilde adds next character regardless
+                c = self.Driver()
+            item += c
+            c = self.Driver()
+        return item
+
 
 l = Lexer("test.txt")
-l.Driver()

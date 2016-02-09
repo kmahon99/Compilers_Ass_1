@@ -15,3 +15,4 @@ delta = alpha / beta ;
 print "Value of " || resultName || " is: " ;
 print delta ;
 print "\n" ;
+"testing quotes: ~" ~""

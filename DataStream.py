@@ -9,16 +9,6 @@ class Source:
 
     def nextChar(self):
         char = self.file.read(1)
-        if char == '':
-            char = "END"
-        elif char == '\n':
-            char = "NEWLINE"
-        elif char == ' ':
-            char = "SPACE"
-        elif char == '\t':
-            char = "TAB"
-        elif char == '\r':
-            char == "RETURN"
         return char
 
     def __del__(self):
