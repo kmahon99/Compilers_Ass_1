@@ -10,26 +10,24 @@ class SymbolTable:
         for line in reserved_file:
             self.tokens.append(Token.Token(line, self.inputSymbol(line, False)))
 
-    def inputSymbol(self, symbol, flag):
-        self.current = self.root
-        for char in symbol:
-            node = TrieNode(char, -1)
-            if flag == True: # static
-                if node in self.current.children:
-                    self.current = self.current.children[self.current.children.index(node)]
-                else:
-                    return -1
-            else:
-                if node in self.current.children:
-                    self.current = self.current.children[self.current.children.index(node)]
-                else:
-                    self.current = self.current.addChild(node)
-                    self.current = node
-        self.tokens.append(Token.Token(self.current.value, self.current.id))
-        if self.current.id == -1:
-            self.current.id = self.global_id
-            self.global_id += 1
-        return self.current.id
+    def processChar(self, char, flag): # set flag to true for dynamic
+        node = TrieNode(char, -1)
+        if node.value == None: # end of input, send id back to caller and reset to root
+            if id == -1 and flag == True:
+                self.current.modID(self.global_id)
+                self.global_id += 1
+            id = self.current.value
+            self.current = self.root
+            return id
+        if node in self.current.children:
+            self.current = self.current.children[self.current.children.index(node)]
+            return None
+        else:
+            if flag == True:
+                self.current.addChild(node)
+                self.current = node
+                return None
+
 
 class TrieNode:
     def __init__(self, value, id):
@@ -39,6 +37,8 @@ class TrieNode:
 
     def addChild(self, node):
         self.children.append(node)
+
+    def modID(self, id): self.id = id
 
     def __eq__(self, other):
         return self.value == other.value

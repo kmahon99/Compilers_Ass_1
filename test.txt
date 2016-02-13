@@ -16,3 +16,4 @@ print "Value of " || resultName || " is: " ;
 print delta ;
 print "\n" ;
 "testing quotes: ~" ~""
+Teststatic

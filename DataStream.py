@@ -1,11 +1,9 @@
+
 #a class to hold the data loaded from a file
 class Source:
 
     def __init__(self, filename):
-        try:
-            self.file = open(filename, "r")
-        except FileNotFoundError:
-            return None
+        self.file = open(filename, "r")
 
     def nextChar(self):
         char = self.file.read(1)
