@@ -5,7 +5,7 @@ nxx is a simple programming language that provides:
  string concatenation
  simple arithmetic operations
  print capability
- 
+
 comments may be enclosed in slash+asterisk .. asterisk+slash
 */
 alpha = 16 ;
@@ -17,3 +17,4 @@ print delta ;
 print "\n" ;
 "testing quotes: ~" ~""
 Teststatic
+provides

@@ -8,9 +8,23 @@ class Lexer:
         self.state = None
         self.filename = filename
         self.stream = Stream.Source(self.filename)
-        while self.state != "EOF":
-            if self.state == "IDENT" or "STATIC":
 
+    def Driver(self):
+        ident = ""
+        while self.state != "EOF":
+            oldstate = self.state
+            char = self.getNextChar()
+            if oldstate != self.state and (oldstate == "IDENT" or oldstate == "STATIC"):
+                print("CHECKING:",ident)
+                ident = ""
+                id = self.table.getID()
+                print("Got ID: ", id)
+            if self.state == "IDENT":
+                ident += char
+                self.table.processChar(char,True)
+            elif self.state == "STATIC":
+                ident += char
+                self.table.processChar(char, False)
 
     def getNextChar(self):
         char = self.stream.nextChar()
@@ -34,3 +48,4 @@ class Lexer:
         return char
 
 l = Lexer("test.txt")
+l.Driver()
