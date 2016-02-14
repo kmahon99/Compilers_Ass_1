@@ -1,3 +1,4 @@
+# Kevin Mahon 13379741
 
 class SymbolTable:
     def __init__(self, statics_file):
@@ -11,8 +12,8 @@ class SymbolTable:
         self.flag = False
         for line in self.reserved_file: # add reserved symbols to trie
             id = self.addString(line, True)
-            print("RESERVED:",line)
-            print("ID =",id)
+            #print("RESERVED:",line)
+            #print("ID =",id)
 
     # add or check a character in the trie, set flag = True for adding, False for checking
     def processChar(self, char, flag):

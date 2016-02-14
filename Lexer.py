@@ -1,5 +1,8 @@
+# Kevin Mahon 13379741
+
 import DataStream as Stream
 import SymbolTable
+import Token
 
 class Lexer:
     def __init__(self, filename):
@@ -9,6 +12,7 @@ class Lexer:
         self.state = None
         self.filename = filename
         self.stream = Stream.Source(self.filename)
+        self.tokens = []
 
     def Driver(self):
         ident = ""
@@ -16,17 +20,25 @@ class Lexer:
             oldstate = self.state
             char = self.getNextChar()
             if char == None: return
-            #ident += char
-            if oldstate != self.state:
-                print(self.state)
-                #ident = ""
-            print(char)
+            if oldstate == "SINGLE":
+                self.tokens.append(Token.Token(ident,0))
+                ident = ""
+            elif oldstate != self.state:
+                if oldstate == "STATIC" or oldstate == "IDENT": self.tokens.append(Token.Token("id",self.table.getID()))
+                elif oldstate == "INT": self.tokens.append(Token.Token("int",self.getValidInt(ident)))
+                elif oldstate == "STRING": self.tokens.append(Token.Token("string",ident))
+                elif oldstate == "UNKNOWN": self.tokens.append(Token.Token("error",0))
+                ident = ""
+            if self.state == "IDENT": self.table.processChar(char, True)
+            elif self.state == "STATIC": self.table.processChar(char, False)
+            ident += char
+        return self.tokens
 
     # gets the next character and changes the Lexer's state based on it's type
     def getNextChar(self):
         char = self.stream.nextChar()
         if char == '': self.state = "EOF"
-        elif ord(char) == 126 and self.state == "STRING": char = self.stream.nextChar() # tilde in string, get the next char regardless
+        elif ord(char) == 126 and self.state == "STRING": char = self.stream.nextChar() # tilde in string
         elif ord(char) != 34 and self.state == "STRING": self.state == "STRING"
         elif ord(char) == 34 and self.state == "STRING":
             self.state = "STRING_END"
@@ -56,4 +68,6 @@ class Lexer:
 
 
 l = Lexer("test.txt")
-l.Driver()
+t = l.Driver()
+for item in t:
+    print(item.to_s())
